@@ -7,6 +7,8 @@ void ofApp::setup(){
 	rotationOuter = 0;
 	rotationInner = 0;
 	rotationCenter = 0;
+	gui.setup();
+	gui.add(eyes.setup("Eyes", 1, 1, 500));
 }
 
 //--------------------------------------------------------------
@@ -18,20 +20,21 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	
+	gui.draw();
 	//make one eye ;)
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-	ofSetColor(ofColor().antiqueWhite);
+	ofSetColor(ofColor().darkBlue);
 	ofCircle(0, 0, 200);
 	ofRotateZ(rotationOuter);
-	ofSetColor(ofColor().crimson);
+	ofSetColor(ofColor().antiqueWhite);
 	ofCircle(0, 0, 130);
 	ofRotateZ(rotationInner);
-	ofSetColor(ofColor().blueSteel);
+	ofSetColor(ofColor(65,169,228));
 	ofCircle(20, 0, 100);
 	ofRotateZ(rotationCenter);
-	ofSetColor(ofColor().aquamarine);
+	ofSetColor(ofColor().black);
 	ofCircle(15, 0, 65);
+	
 	
 
 }
