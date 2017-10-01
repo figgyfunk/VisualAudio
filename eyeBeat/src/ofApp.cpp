@@ -1,17 +1,23 @@
 #include "ofApp.h"
+float rotationX;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	rotationX = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	rotationX = rotationX + .05;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	
+	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+	ofRotateZ(rotationX);
+	ofCircle(-300, 0, 130);
+	
 
 }
 
