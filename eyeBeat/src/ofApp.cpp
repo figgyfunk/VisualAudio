@@ -1,22 +1,37 @@
 #include "ofApp.h"
-float rotationX;
-
+float rotationOuter;
+float rotationInner;
+float rotationCenter;
 //--------------------------------------------------------------
 void ofApp::setup(){
-	rotationX = 0;
+	rotationOuter = 0;
+	rotationInner = 0;
+	rotationCenter = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	rotationX = rotationX + .05;
+	rotationOuter = rotationOuter + .05;
+	rotationInner = rotationInner - .3;
+	rotationCenter = rotationCenter - .3;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 	
+	//make one eye ;)
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-	ofRotateZ(rotationX);
-	ofCircle(-300, 0, 130);
+	ofSetColor(ofColor().antiqueWhite);
+	ofCircle(0, 0, 200);
+	ofRotateZ(rotationOuter);
+	ofSetColor(ofColor().crimson);
+	ofCircle(0, 0, 130);
+	ofRotateZ(rotationInner);
+	ofSetColor(ofColor().blueSteel);
+	ofCircle(20, 0, 100);
+	ofRotateZ(rotationCenter);
+	ofSetColor(ofColor().aquamarine);
+	ofCircle(15, 0, 65);
 	
 
 }
