@@ -2,38 +2,46 @@
 float rotationOuter;
 float rotationInner;
 float rotationCenter;
+float scale;
 //--------------------------------------------------------------
 void ofApp::setup(){
+	
 	rotationOuter = 0;
 	rotationInner = 0;
 	rotationCenter = 0;
 	gui.setup();
-	gui.add(eyes.setup("Eyes", 1, 1, 500));
+	gui.add(eyes.setup("Eyes", 1, 1, 16));
+	//scale = .1;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	rotationOuter = rotationOuter + .05;
-	rotationInner = rotationInner - .3;
-	rotationCenter = rotationCenter - .3;
+	rotationOuter = rotationOuter + .2;
+	rotationInner = rotationInner - .5;
+	rotationCenter = rotationCenter - .5;
+	scale = 1/ float(eyes);
+	scale = ofClamp(scale, .1, 1);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	//number of eyes slider
 	gui.draw();
 	//make one eye ;)
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+	ofSetColor(ofColor().black);
+	ofCircle(0, 0, 207*scale);
 	ofSetColor(ofColor().darkBlue);
-	ofCircle(0, 0, 200);
+	ofCircle(0, 0, 200*scale);
 	ofRotateZ(rotationOuter);
 	ofSetColor(ofColor().antiqueWhite);
-	ofCircle(0, 0, 130);
+	ofCircle(0, 0, 130*scale);
 	ofRotateZ(rotationInner);
 	ofSetColor(ofColor(65,169,228));
-	ofCircle(20, 0, 100);
+	ofCircle(20*scale, 0, 100*scale);
 	ofRotateZ(rotationCenter);
 	ofSetColor(ofColor().black);
-	ofCircle(15, 0, 65);
+	ofCircle(15*scale, 0, 65*scale);
 	
 	
 
