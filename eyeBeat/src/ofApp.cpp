@@ -3,6 +3,8 @@ float rotationOuter;
 float rotationInner;
 float rotationCenter;
 float scale;
+vector<float> eyeLocations;
+int eyeCount;
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
@@ -10,7 +12,8 @@ void ofApp::setup(){
 	rotationInner = 0;
 	rotationCenter = 0;
 	gui.setup();
-	gui.add(eyes.setup("Eyes", 1, 1, 16));
+	gui.add(eyes.setup("Eyes", 1, 1, 17));
+	eyeCount = 1;
 	//scale = .1;
 }
 
@@ -21,6 +24,9 @@ void ofApp::update(){
 	rotationCenter = rotationCenter - .5;
 	scale = 1/ float(eyes);
 	scale = ofClamp(scale, .1, 1);
+	eyeCount = eyes;
+	eyeLocations.clear();
+	drawEyes(0, ofGetWidth()/2, ofGetHeight()/2);
 }
 
 //--------------------------------------------------------------
@@ -28,23 +34,46 @@ void ofApp::draw(){
 	//number of eyes slider
 	gui.draw();
 	//make one eye ;)
-	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-	ofSetColor(ofColor().black);
-	ofCircle(0, 0, 207*scale);
-	ofSetColor(ofColor().darkBlue);
-	ofCircle(0, 0, 200*scale);
-	ofRotateZ(rotationOuter);
-	ofSetColor(ofColor().antiqueWhite);
-	ofCircle(0, 0, 130*scale);
-	ofRotateZ(rotationInner);
-	ofSetColor(ofColor(65,169,228));
-	ofCircle(20*scale, 0, 100*scale);
-	ofRotateZ(rotationCenter);
-	ofSetColor(ofColor().black);
-	ofCircle(15*scale, 0, 65*scale);
+	printf("%d \n", eyeLocations.size());
+	for (int i = 0; i < eyeLocations.size(); i+=2)
+	{
+		ofPushMatrix();
+		ofTranslate(eyeLocations[i], eyeLocations[i+1]);
+		ofSetColor(ofColor().black);
+		ofCircle(0, 0, 207 * scale);
+		ofSetColor(ofColor().darkBlue);
+		ofCircle(0, 0, 200 * scale);
+		ofRotateZ(rotationOuter);
+		ofSetColor(ofColor().antiqueWhite);
+		ofCircle(0, 0, 130 * scale);
+		ofRotateZ(rotationInner);
+		ofSetColor(ofColor(65, 169, 228));
+		ofCircle(20 * scale, 0, 100 * scale);
+		ofRotateZ(rotationCenter);
+		ofSetColor(ofColor().black);
+		ofCircle(15 * scale, 0, 65 * scale);
+		ofPopMatrix();
+	}
+	
 	
 	
 
+}
+
+void ofApp::drawEyes(int count, float x, float y) {
+	count += 1;
+	eyeLocations.push_back(x);
+	eyeLocations.push_back(y);
+	if (count < eyeCount) {
+		
+		drawEyes(count, x - (414 * scale), y - (414 * scale));
+		drawEyes(count, x - (414 * scale), y + (414 * scale));
+		drawEyes(count, x + (414 * scale), y - (414 * scale));
+		drawEyes(count, x + (414 * scale), y + (414 * scale));
+	}
+	
+	return;
+	
 }
 
 //--------------------------------------------------------------
