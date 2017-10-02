@@ -14,7 +14,7 @@ void ofApp::setup(){
 	gui.setup();
 	gui.add(eyes.setup("Eyes", 1, 1, 17));
 	eyeCount = 1;
-	//scale = .1;
+	ofBackground(ofColor().orange);
 }
 
 //--------------------------------------------------------------
@@ -32,13 +32,14 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	//number of eyes slider
-	gui.draw();
+	
 	//make one eye ;)
 	printf("%d \n", eyeLocations.size());
 	for (int i = 0; i < eyeLocations.size(); i+=2)
 	{
 		ofPushMatrix();
 		ofTranslate(eyeLocations[i], eyeLocations[i+1]);
+		//printf("%f, %f \n", eyeLocations[i], eyeLocations[i + 1]);
 		ofSetColor(ofColor().black);
 		ofCircle(0, 0, 207 * scale);
 		ofSetColor(ofColor().darkBlue);
@@ -54,27 +55,31 @@ void ofApp::draw(){
 		ofCircle(15 * scale, 0, 65 * scale);
 		ofPopMatrix();
 	}
-	
+	gui.draw();
 	
 	
 
 }
 
 void ofApp::drawEyes(int count, float x, float y) {
+	
 	count += 1;
 	eyeLocations.push_back(x);
 	eyeLocations.push_back(y);
 	if (count < eyeCount) {
-		
 		drawEyes(count, x - (414 * scale), y - (414 * scale));
 		drawEyes(count, x - (414 * scale), y + (414 * scale));
 		drawEyes(count, x + (414 * scale), y - (414 * scale));
 		drawEyes(count, x + (414 * scale), y + (414 * scale));
+		
+		
 	}
 	
 	return;
 	
 }
+
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){

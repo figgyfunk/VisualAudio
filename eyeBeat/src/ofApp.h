@@ -23,6 +23,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		void drawEyes(int count, float x, float y);
 		
+		
 		ofxIntSlider eyes; 
 		ofxPanel gui; 
 
