@@ -20,7 +20,7 @@ void ofApp::setup(){
 	
 	//slider setup.
 	gui.setup();
-	gui.add(eyes.setup("Eyes", 2, 1, 17));
+	gui.add(eyes.setup("Eyes", 2, 1, 5));
 	eyeCount = 1;
 	//background
 	ofBackground(ofColor().black);
@@ -34,6 +34,7 @@ void ofApp::setup(){
 	bands = 64;
 
 	song.play();
+	song.setLoop(true);
 	
 	lastBeat = ofGetElapsedTimeMicros();
 
