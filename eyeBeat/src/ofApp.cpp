@@ -27,6 +27,23 @@ void ofApp::update(){
 	eyeCount = eyes;
 	eyeLocations.clear();
 	drawEyes(0, ofGetWidth()/2, ofGetHeight()/2);
+	vector<float> temp; 
+	for (int i = 0; i < eyeLocations.size(); i += 2) {
+		bool dup = false;
+		float x = eyeLocations[i];
+		float y = eyeLocations[i + 1];
+		for (int j = 0; j < temp.size(); j += 2) {
+			if (x == temp[j] && y == temp[j + 1]) {
+				dup = true; 
+			}
+
+		}
+		if (!dup) {
+			temp.push_back(x); 
+			temp.push_back(y);
+		}
+	}
+	eyeLocations = temp;
 }
 
 //--------------------------------------------------------------

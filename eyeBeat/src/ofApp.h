@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include <vector>
+#include <algorithm>
 
 class ofApp : public ofBaseApp{
 
