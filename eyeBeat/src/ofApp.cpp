@@ -4,24 +4,28 @@ float rotationInner;
 float rotationCenter;
 float scalePupil;
 float scale;
+float beatWait;
+float lastBeat;
 vector<float> eyeLocations;
+vector<ofColor> pallete;
 int eyeCount;
+int color = 0;
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	ofEnableAlphaBlending();
 	//rotation values for parts of eyes.
 	rotationOuter = 0;
 	rotationInner = 0;
 	rotationCenter = 0;
-
+	
 	//slider setup.
 	gui.setup();
-	gui.add(eyes.setup("Eyes", 1, 1, 17));
+	gui.add(eyes.setup("Eyes", 2, 1, 17));
 	eyeCount = 1;
 	//background
 	ofBackground(ofColor().black);
 	//load and play song. 
-	song.load("yesterday.mp3");
+	song.load("sleepingPowder.mp3");
 	fftSmooth = new float[8192];
 	for (int i = 0; i < 8192; i++)
 	{
@@ -31,14 +35,36 @@ void ofApp::setup(){
 
 	song.play();
 	
+	lastBeat = ofGetElapsedTimeMicros();
 
+	pallete.push_back(ofColor(255,255,0,128));
+	pallete.push_back(ofColor(0,255,255,128));
+	pallete.push_back(ofColor(0,255,1,128));
+	pallete.push_back(ofColor(255,0,254,128));
+	pallete.push_back(ofColor(254,0,0,128));
+	pallete.push_back(ofColor(0,0,254,128));
 	
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	beatWait = 576923.07692;
 	ofSoundUpdate();
+	if (ofGetElapsedTimeMicros() - lastBeat > beatWait)
+	{
+		if(ofGetElapsedTimef()> 20 && ofGetElapsedTimef()<25){ printf("%f, %f, %f\n", ofGetElapsedTimef, lastBeat, beatWait); }
+		
+		ofBackground(pallete[color]);
+		if (color == 5)
+		{
+			color = 0;
+		}
+		else
+		{
+			color += 1;
+		}
+		lastBeat = ofGetElapsedTimeMicros();
+	}
 	float * value = ofSoundGetSpectrum(bands);
 	for (int i = 0; i < bands; i++)
 	{
@@ -91,7 +117,11 @@ void ofApp::draw(){
 	//int count = 1;
 	//make one eye ;)
 	//printf("%d \n", eyeLocations.size());
-	
+	ofPushMatrix();
+	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+	ofSetColor(ofColor().black);
+	ofCircle(0, 0, 220*(eyes*2)*scale );
+	ofPopMatrix();
 	
 
 		for (int i = 0; i < eyeLocations.size(); i += 2)
