@@ -2,6 +2,7 @@
 float rotationOuter;
 float rotationInner;
 float rotationCenter;
+
 float scale;
 vector<float> eyeLocations;
 int eyeCount;
@@ -11,6 +12,7 @@ void ofApp::setup(){
 	rotationOuter = 0;
 	rotationInner = 0;
 	rotationCenter = 0;
+
 	gui.setup();
 	gui.add(eyes.setup("Eyes", 1, 1, 17));
 	eyeCount = 1;
@@ -22,6 +24,8 @@ void ofApp::update(){
 	rotationOuter = rotationOuter + .2;
 	rotationInner = rotationInner - .5;
 	rotationCenter = rotationCenter - .5;
+	
+	
 	scale = 1/ float(eyes);
 	scale = ofClamp(scale, .1, 1);
 	eyeCount = eyes;
@@ -49,11 +53,12 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	//number of eyes slider
-	
+	//int count = 1;
 	//make one eye ;)
-	printf("%d \n", eyeLocations.size());
+	//printf("%d \n", eyeLocations.size());
 	for (int i = 0; i < eyeLocations.size(); i+=2)
 	{
+		//printf("%d", count);
 		ofPushMatrix();
 		ofTranslate(eyeLocations[i], eyeLocations[i+1]);
 		//printf("%f, %f \n", eyeLocations[i], eyeLocations[i + 1]);
@@ -71,6 +76,15 @@ void ofApp::draw(){
 		ofSetColor(ofColor().black);
 		ofCircle(15 * scale, 0, 65 * scale);
 		ofPopMatrix();
+		/*if (count % 2 == 1) {
+			ofPushMatrix();
+			ofTranslate(eyeLocations[i], eyeLocations[i + 1]);
+			ofSetColor(ofColor().pink);
+			ofDrawRectangle(0, 0, 207 * 2 * scale, 207 * 2 * scale);
+			ofPopMatrix();
+		}
+		
+		count += 1;*/
 	}
 	gui.draw();
 	
