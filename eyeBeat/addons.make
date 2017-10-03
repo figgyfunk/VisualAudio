@@ -1,3 +1,2 @@
-ofxAudioAnalyzer
-ofxBeat
+ofxFft
 ofxGui

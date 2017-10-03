@@ -2,32 +2,67 @@
 float rotationOuter;
 float rotationInner;
 float rotationCenter;
-
+float scalePupil;
 float scale;
 vector<float> eyeLocations;
 int eyeCount;
 //--------------------------------------------------------------
 void ofApp::setup(){
-	
+
+	//rotation values for parts of eyes.
 	rotationOuter = 0;
 	rotationInner = 0;
 	rotationCenter = 0;
 
+	//slider setup.
 	gui.setup();
 	gui.add(eyes.setup("Eyes", 1, 1, 17));
 	eyeCount = 1;
-	ofBackground(ofColor().orange);
+	//background
+	ofBackground(ofColor().black);
+	//load and play song. 
+	song.load("yesterday.mp3");
+	fftSmooth = new float[8192];
+	for (int i = 0; i < 8192; i++)
+	{
+		fftSmooth[i] = 0;
+	}
+	bands = 64;
+
+	song.play();
+	
+
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	rotationOuter = rotationOuter + .2;
-	rotationInner = rotationInner - .5;
-	rotationCenter = rotationCenter - .5;
+
+	ofSoundUpdate();
+	float * value = ofSoundGetSpectrum(bands);
+	for (int i = 0; i < bands; i++)
+	{
+		fftSmooth[i] *= .9f;
+		if (fftSmooth[i] < value[i]) {
+			fftSmooth[i] = value[i];
+		}
+	}
+	scale = (float(1) / float(eyes));
+	scalePupil = scale;
+	for (int i = 0; i < bands; i++)
+	{
+		//if(fftSmooth[i]> .5){ printf("%f", fftSmooth[i]); }
+		
+		rotationOuter = rotationOuter + (.1*fftSmooth[i]);
+		rotationInner = rotationInner - (.2*fftSmooth[i]);
+		rotationCenter = rotationCenter - (.2*fftSmooth[i]);
+		scalePupil = scalePupil - (fftSmooth[i] * .01);
+	}
+
+
 	
-	
-	scale = 1/ float(eyes);
 	scale = ofClamp(scale, .1, 1);
+	scalePupil = ofClamp(scalePupil, .1, 1);
 	eyeCount = eyes;
 	eyeLocations.clear();
 	drawEyes(0, ofGetWidth()/2, ofGetHeight()/2);
@@ -56,41 +91,47 @@ void ofApp::draw(){
 	//int count = 1;
 	//make one eye ;)
 	//printf("%d \n", eyeLocations.size());
-	for (int i = 0; i < eyeLocations.size(); i+=2)
-	{
-		//printf("%d", count);
-		ofPushMatrix();
-		ofTranslate(eyeLocations[i], eyeLocations[i+1]);
-		//printf("%f, %f \n", eyeLocations[i], eyeLocations[i + 1]);
-		ofSetColor(ofColor().black);
-		ofCircle(0, 0, 207 * scale);
-		ofSetColor(ofColor().darkBlue);
-		ofCircle(0, 0, 200 * scale);
-		ofRotateZ(rotationOuter);
-		ofSetColor(ofColor().antiqueWhite);
-		ofCircle(0, 0, 130 * scale);
-		ofRotateZ(rotationInner);
-		ofSetColor(ofColor(65, 169, 228));
-		ofCircle(20 * scale, 0, 100 * scale);
-		ofRotateZ(rotationCenter);
-		ofSetColor(ofColor().black);
-		ofCircle(15 * scale, 0, 65 * scale);
-		ofPopMatrix();
-		/*if (count % 2 == 1) {
+	
+	
+
+		for (int i = 0; i < eyeLocations.size(); i += 2)
+		{
+			//printf("%d", count);
 			ofPushMatrix();
 			ofTranslate(eyeLocations[i], eyeLocations[i + 1]);
-			ofSetColor(ofColor().pink);
-			ofDrawRectangle(0, 0, 207 * 2 * scale, 207 * 2 * scale);
+			//printf("%f, %f \n", eyeLocations[i], eyeLocations[i + 1]);
+			ofSetColor(ofColor().black);
+			ofCircle(0, 0, 207 * scale);
+			ofSetColor(ofColor().darkBlue);
+			ofCircle(0, 0, 200 * scale);
+			ofRotateZ(rotationOuter);
+			ofSetColor(ofColor().antiqueWhite);
+			ofCircle(0, 0, 130 * scale);
+			ofRotateZ(rotationInner);
+			ofSetColor(ofColor(65, 169, 228));
+			ofCircle(20 * scale, 0, 100 * scale);
+			ofRotateZ(rotationCenter);
+			ofSetColor(ofColor().black);
+			ofCircle(15 * scale, 0, 65 * scalePupil);
 			ofPopMatrix();
+			/*if (count % 2 == 1) {
+				ofPushMatrix();
+				ofTranslate(eyeLocations[i], eyeLocations[i + 1]);
+				ofSetColor(ofColor().pink);
+				ofDrawRectangle(0, 0, 207 * 2 * scale, 207 * 2 * scale);
+				ofPopMatrix();
+			}
+
+			count += 1;*/
 		}
-		
-		count += 1;*/
-	}
+	
 	gui.draw();
 	
 	
 
 }
+
+
 
 void ofApp::drawEyes(int count, float x, float y) {
 	

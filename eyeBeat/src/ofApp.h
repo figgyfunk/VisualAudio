@@ -24,9 +24,12 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		void drawEyes(int count, float x, float y);
+
 		
-		
+		ofSoundPlayer song;
 		ofxIntSlider eyes; 
 		ofxPanel gui; 
+		float * fftSmooth; 
+		int bands;
 
 };
